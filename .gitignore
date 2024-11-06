@@ -161,7 +161,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+#obsolete notebooks
+data_test.ipynb
 
 # Dataset
+old_data/
 data/TMDB_all_movies.csv
 data/main_complete.csv
