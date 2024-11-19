@@ -169,3 +169,4 @@ data_test.ipynb
 old_data/
 data/TMDB_all_movies.csv
 data/main_complete.csv
+data/main_complete_og.csv
