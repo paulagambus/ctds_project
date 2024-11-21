@@ -1,0 +1,1 @@
+## This document contains the functions used in in the project
