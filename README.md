@@ -1,7 +1,7 @@
 # ctds_project
-READ ME FILE
+In this project, we develop a movie recommendation system based on the following datasets.
 
-data source:
+Data sources:
  - TMDB_all_movies.csv: https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates (downloaded 29/10/2024)
  - amazon.csv: https://www.kaggle.com/datasets/octopusteam/full-amazon-prime-dataset (downloaded 06/11/2024)
  - apple.csv: https://www.kaggle.com/datasets/octopusteam/full-apple-tv-dataset (downloaded 06/11/2024) 
