@@ -8,6 +8,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
 import numpy as np
+import pandas as pd
 
 from datasketch import MinHash, MinHashLSH
 
@@ -131,6 +132,12 @@ def create_combined_minhash(movie, one_hot_features, non_one_hot_features, num_p
     return m
 
 def estimate_jaccard_similarity(data, minhashes, movie_title):
+    """
+    This function estimates the Jaccard similarity between a movie and all other movies in the dataset.
+    data: dataset with the movies
+    minhashes: MinHash objects for all movies
+
+    """
     # Find all movies with the specified title
     matching_movies = data[data['title'] == movie_title]
 
@@ -163,3 +170,37 @@ def estimate_jaccard_similarity(data, minhashes, movie_title):
     similarity_scores.sort(key=lambda x: x[1], reverse=True)
     
     return similarity_scores, movie_id
+
+def create_top_n_dataframe(similarity_scores, data, movie_id, n=10):
+    """
+    This function creates a dataframe with the top N most similar movies.
+    similarity_scores: list of similarity scores
+    data: dataset with the movies
+    movie_id: id of the movie
+    n: number of movies to return
+    """
+    columns = ['title', 'crew', 'production_companies', 'production_countries', 'sentiment_category', 'Netflix', 'Amazon', 'Hulu', 'Apple', 'HBO']
+    top_n_df = pd.DataFrame(columns=columns)
+    top_n_list = []
+    
+    for movie, score, minhash, id in similarity_scores[:n]:
+        movie_data = data[data['id'] == id]
+        top_n_list.append(movie_data)
+
+    top_n_list.append(data[data['id'] == movie_id])
+    top_n_df = pd.concat(top_n_list)
+    
+    return top_n_df
+
+def calculate_jaccard_similarity_matrix(top_10_df):
+    """
+    This function calculates the Jaccard similarity matrix between the top 10 movies.
+    top_10_df: dataframe with the top 10 movies
+    """
+
+    jaccard_similarity_matrix = np.zeros((len(top_10_df), len(top_10_df)))
+    for i in range(len(top_10_df)):
+        for j in range(len(top_10_df)):
+            jaccard_similarity = top_10_df.iloc[i]['minhash'].jaccard(top_10_df.iloc[j]['minhash'])
+            jaccard_similarity_matrix[i][j] = jaccard_similarity
+    return jaccard_similarity_matrix
