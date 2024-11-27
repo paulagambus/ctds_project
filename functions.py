@@ -13,11 +13,20 @@ from datasketch import MinHash, MinHashLSH
 
 #Functions to preprocess the data
 def remove_tv_show(df):
+    """
+    This function removes the TV shows from the dataset
+    df: dataset with the movies and TV shows
+    """
     return df[df['type'] == 'movie']
 
 
 def platform_column(main, platform, platform_name):
-    #add platform column to main dataset
+    """
+    This function adds a column to the main dataset that indicates whether a movie is available on a specific platform.
+    main: dataset with the movies
+    platform: dataset with the movies available on the platform
+    platform_name: name of the platform
+    """
     for index, row in main.iterrows():
         if row['title'] in platform['title'].values: 
             main.loc[index, platform_name] = 1
@@ -27,15 +36,27 @@ def platform_column(main, platform, platform_name):
 
 # Functions to analyze the data
 def count_movies(df, platform_name):
+    """
+    This function counts the number of movies available on a specific platform.
+    df: dataset with the movies
+    platform_name: name of the platform
+    """
     return df[platform_name].sum()
 
 def more_than_one_platform(df):
-    #return the movies that are available on more than one platform
+    """
+    This function returns the movies that are available on more than one platform.
+    df: dataset with the movies   
+    """
     return df[(df['Netflix'] + df['Amazon'] + df['Hulu'] + df['Apple'] + df['HBO']) > 1]
 
 
 #Functions to calculate the sentiment
 def sentiment(tokens):
+    """
+    This function calculates the sentiment of a list of tokens.
+    tokens: list of tokens
+    """
     #load the LabMT wordlist from Data_Set_S1.txt
     with open("./data/Data_Set_S1.txt") as f:
         lines = f.readlines()
@@ -58,6 +79,13 @@ def sentiment(tokens):
     return round(sentiment, 2)
 
 def preprocess_and_analyze_sentiment(text, lemmatizer = WordNetLemmatizer(), stop_words = set(stopwords.words('english')), punctuation_table = str.maketrans('', '', string.punctuation)):
+    """
+    This function preprocesses the text and calculates the sentiment score.
+    text: text to be analyzed
+    lemmatizer: lemmatizer object
+    stop_words: set of stopwords
+    punctuation_table: punctuation tables
+    """
     # Check for non-null and non-'NaN' string types
     if isinstance(text, str) and text != 'NaN':
         # Lowercase, remove punctuation, tokenize, remove stopwords, and lemmatize
@@ -72,6 +100,12 @@ def preprocess_and_analyze_sentiment(text, lemmatizer = WordNetLemmatizer(), sto
         return np.nan
     
 def categorize_sentiment(value, low_threshold, high_threshold):
+    """
+    This function categorizes the sentiment score into 'low', 'medium', or 'high'.
+    value: sentiment score
+    low_threshold: low threshold
+    high_threshold: high threshold
+    """
     if value < low_threshold:
         return 'low'
     elif value > high_threshold:
@@ -81,6 +115,12 @@ def categorize_sentiment(value, low_threshold, high_threshold):
     
 # Functions to calculate similarity
 def create_combined_minhash(movie, one_hot_features, non_one_hot_features, num_perm=128):
+    """
+    This function creates a MinHash object for a movie using the one-hot encoded and non-one-hot encoded features.
+    movie: movie data
+    one_hot_features: one-hot encoded features
+    non_one_hot_features: non-one-hot encoded features
+    """
     m = MinHash(num_perm=num_perm)
     
     # Add one-hot encoded features
