@@ -11,6 +11,8 @@ import numpy as np
 
 from datasketch import MinHash, MinHashLSH
 
+from tqdm import tqdm
+
 #Functions to preprocess the data
 def remove_tv_show(df):
     """
@@ -127,3 +129,37 @@ def create_combined_minhash(movie, one_hot_features, non_one_hot_features, num_p
             m.update(token.encode('utf8'))
     
     return m
+
+def estimate_jaccard_similarity(data, minhashes, movie_title):
+    # Find all movies with the specified title
+    matching_movies = data[data['title'] == movie_title]
+
+    if len(matching_movies) > 1:
+        print(f"There are multiple movies with the title '{movie_title}'. Please choose one by its id:")
+        for idx, row in matching_movies.iterrows():
+            print(f"ID: {row['id']}, Crew: {row['crew']}")
+        movie_id = int(input("Enter the movie id: "))
+        movie_index = data[data['id'] == movie_id].index[0]
+        print(f"Selected movie with id '{movie_id}' in position '{movie_index}'")
+    elif len(matching_movies) == 1:
+        movie_index = data[data['title'] == movie_title].index[0]
+        print('movie_index:', movie_index)
+        movie_id = data[data['title'] == movie_title]['id'].values[0]
+        print(f"movie_id: {movie_id}")
+    else:
+        print(f"No movies found with the title '{movie_title}'")
+        return []
+
+    # Estimate Jaccard similarity with the specified movie
+    print(f"Estimated Jaccard Similarity with '{movie_title}':")
+    similarity_scores = []
+
+    for i in tqdm(range(len(minhashes)), desc="Calculating Similarities"):
+        if i != movie_index:
+            similarity = data.iloc[movie_index]['minhash'].jaccard(data.iloc[i]['minhash'])
+            similarity_scores.append((data.iloc[i]['title'], similarity, minhashes[i], data.iloc[i]['id']))
+
+    # Sort the similarity scores in descending order
+    similarity_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    return similarity_scores, movie_id
