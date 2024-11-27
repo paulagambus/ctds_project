@@ -43,13 +43,6 @@ def count_movies(df, platform_name):
     """
     return df[platform_name].sum()
 
-def more_than_one_platform(df):
-    """
-    This function returns the movies that are available on more than one platform.
-    df: dataset with the movies   
-    """
-    return df[(df['Netflix'] + df['Amazon'] + df['Hulu'] + df['Apple'] + df['HBO']) > 1]
-
 
 #Functions to calculate the sentiment
 def sentiment(tokens):
