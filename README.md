@@ -24,10 +24,10 @@ Note that to run <font color="black"> ctds_g6_project.ipynb </font> the TMDB_all
 Once <font color="black"> ctds_g6_project.ipynb </font> is run, input a reference movie title to receive 10 similar movie suggestions, categorized by clusters, with streaming platform availability.
 
 # Authors
-- Raquel Chaves Martinez
-- Paula Gambus i Moreno
-- Angel Paisan Garcia
-- Alba Pi Mas 
+- Raquel Chaves Martinez - s243297
+- Paula Gambus i Moreno - s233219
+- Angel Paisan Garcia - s232793
+- Alba Pi Mas - s243280
 
  
 
