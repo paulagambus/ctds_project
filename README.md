@@ -24,10 +24,10 @@ Note that to run ctds_g6_project.ipynb the TMDB_all_movies.csv dataset is requir
 Once ctds_g6_project.ipynb is run, input a reference movie title to receive 10 similar movie suggestions, categorized by clusters, with streaming platform availability.
 
 # Authors
-Raquel Chaves Martinez
-Paula Gambus i Moreno
-Angel Paisan Garcia
-Alba Pi Mas 
+- Raquel Chaves Martinez
+- Paula Gambus i Moreno
+- Angel Paisan Garcia
+- Alba Pi Mas 
 
  
 
